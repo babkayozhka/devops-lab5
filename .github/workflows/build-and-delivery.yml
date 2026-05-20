@@ -1,13 +1,18 @@
 name: Build and Delivery
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Test Python App"]
+    types:
+      - completed
     branches:
       - main
 
 jobs:
   cd:
     runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout
